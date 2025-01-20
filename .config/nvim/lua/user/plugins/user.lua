@@ -14,22 +14,27 @@ return {
   {'tpope/vim-rhubarb', event = "User AstroGitFile"},
 
   {'tpope/vim-repeat', lazy = false},
+
+  -- file nav
   {'tpope/vim-vinegar', lazy = false},
 
   -- Detect tabstop and shiftwidth automatically
   {'tpope/vim-sleuth', lazy = false},
 
   -- Clojure
-  {'tpope/vim-fireplace'},
+  {'gpanders/nvim-parinfer'},
+  -- {'tpope/vim-fireplace'},
   {'tpope/vim-salve', lazy = false},
-  {'guns/vim-sexp', lazy = false},
-  {'tpope/vim-sexp-mappings-for-regular-people', lazy = false},
+  -- {'guns/vim-sexp', lazy = false},
+  -- {'tpope/vim-sexp-mappings-for-regular-people', lazy = false},
   {'luochen1990/rainbow', lazy = false},
   {'tpope/vim-surround', lazy = false},
   {
     'Olical/conjure',
     ft = {'Clojure', 'ClojureScript'},
   },
+
+  -- tmux integration
   {
     "alexghergh/nvim-tmux-navigation",
     config = function()
@@ -40,6 +45,8 @@ return {
       vim.keymap.set("n", "<C-l>", "<Cmd>NvimTmuxNavigateRight<CR>", {})
     end
   },
+
+  -- pretty colors
   {
     'sainnhe/everforest',
     priority = 1000,

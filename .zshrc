@@ -55,31 +55,34 @@ alias vimplugins="nvim ~/.config/nvim/lua/user/plugins/user.lua"
 alias reload="source ~/.zshrc"
 alias vimf='nvim $(fzf -m --preview="bat --color=always {}")'
 alias omp=oh-my-posh
+alias cd=z
+alias cat=bat
+alias ls=eza
 
 
 ### work/job specific configs
-source ~/dotfiles/secrets/**
+source ~/.dotfiles/secrets/**
 
 
 #export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/Users/daniloamoroso/bin:$PATH"
-export PATH="/Users/daniloamoroso/workspace/scripts:$PATH"
+export PATH="/Users/dan/bin:$PATH"
+export PATH="/Users/dan/workspace/scripts:$PATH"
 export PATH="/opt/homebrew/opt/ruby@3.1/bin:$PATH"
 export PATH="/Applications/RubyMine.app/Contents/MacOS:$PATH"
-export PATH="/Users/daniloamoroso/.cargo/bin:$PATH"
+export PATH="/Users/dan/.cargo/bin:$PATH"
 
 # remove username and host from prompt 
 prompt_context() {}
 
 # pnpm
-export PNPM_HOME="/Users/daniloamoroso/Library/pnpm"
+export PNPM_HOME="/Users/dan/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-#[ -f "/Users/daniloamoroso/.ghcup/env" ] && source "/Users/daniloamoroso/.ghcup/env" # ghcup-env
+#[ -f "/Users/dan/.ghcup/env" ] && source "/Users/dan/.ghcup/env" # ghcup-env
 
 
 # Updates PATH for the Google Cloud SDK.
@@ -89,7 +92,7 @@ if [ -f '~/workspace/google-cloud-sdk/path.zsh.inc' ]; then . '~/workspace/googl
 if [ -f '~/workspace/google-cloud-sdk/completion.zsh.inc' ]; then . '~/workspace/google-cloud-sdk/completion.zsh.inc'; fi
 
 # direnv hook
-eval "$(direnv hook zsh)"
+# eval "$(direnv hook zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
@@ -119,7 +122,7 @@ setopt HIST_NO_STORE
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   # to run with a theme, then export with 'omp config export --format toml --output ~/dotfiles/oh-my-posh.toml'
   # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
-  eval "$(oh-my-posh init zsh --config ~/dotfiles/oh-my-posh.toml)"
+  eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh.toml)"
 fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
