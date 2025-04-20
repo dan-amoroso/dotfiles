@@ -50,15 +50,16 @@ fi
 # Example aliases
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
-alias vimrc="nvim ~/.config/nvim/lua/user/init.lua"
-alias vimplugins="nvim ~/.config/nvim/lua/user/plugins/user.lua"
+alias vimrc="nvim ~/.config/nvim/init.lua"
+alias vimplugins="nvim ~/.config/nvim/lua/custom/plugins/init.lua"
 alias reload="source ~/.zshrc"
-alias vimf='nvim $(fzf -m --preview="bat --color=always {}")'
+alias vimfzf='nvim $(fzf -m --preview="bat --color=always {}")'
 alias omp=oh-my-posh
 alias cd=z
 alias cat=bat
 alias ls=eza
-
+alias vim='nvim'
+alias n='nvim'
 
 ### work/job specific configs
 source ~/.dotfiles/secrets/**
@@ -70,6 +71,7 @@ export PATH="/Users/dan/workspace/scripts:$PATH"
 export PATH="/opt/homebrew/opt/ruby@3.1/bin:$PATH"
 export PATH="/Applications/RubyMine.app/Contents/MacOS:$PATH"
 export PATH="/Users/dan/.cargo/bin:$PATH"
+export PATH="$HOME/.luarocks/bin:$HOME/.luarocks51/bin:$PATH"
 
 # remove username and host from prompt 
 prompt_context() {}
@@ -128,3 +130,5 @@ fi
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+. "$HOME/.local/bin/env"

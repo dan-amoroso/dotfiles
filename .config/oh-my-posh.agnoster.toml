@@ -1,0 +1,80 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version = 2
+final_space = true
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    type = 'root'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = '  '
+    background = '#ffe9aa'
+    foreground = '#100e23'
+    Text = ''
+    Duration = 0
+    NameLength = 0
+
+  [[blocks.segments]]
+    type = 'session'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = ' {{ .UserName }}@{{ .HostName }} '
+    background = '#ffffff'
+    foreground = '#100e23'
+    Text = ''
+    Duration = 0
+    NameLength = 0
+
+  [[blocks.segments]]
+    type = 'path'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = ' {{ .Path }} '
+    background = '#91ddff'
+    foreground = '#100e23'
+    Text = ''
+    Duration = 0
+    NameLength = 0
+
+    [blocks.segments.properties]
+      folder_icon = ''
+      folder_separator_icon = '  '
+      home_icon = ''
+      style = 'agnoster'
+
+  [[blocks.segments]]
+    type = 'git'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = ' {{ .HEAD }} '
+    background = '#95ffa4'
+    foreground = '#193549'
+    Text = ''
+    Duration = 0
+    NameLength = 0
+
+  [[blocks.segments]]
+    type = 'python'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = '  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} '
+    background = '#906cff'
+    foreground = '#100e23'
+    Text = ''
+    Duration = 0
+    NameLength = 0
+
+  [[blocks.segments]]
+    type = 'status'
+    style = 'powerline'
+    powerline_symbol = ''
+    template = ' {{ reason .Code }} '
+    background = '#ff8080'
+    foreground = '#ffffff'
+    Text = ''
+    Duration = 0
+    NameLength = 0
