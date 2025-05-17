@@ -7,3 +7,6 @@ secrets/**
 # prevent committing secrets via pgcli
 .config/pgcli/log
 .config/pgcli/history
+
+# macOS finder stuff
+.DS_Store

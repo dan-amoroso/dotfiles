@@ -7,6 +7,10 @@ export ZSH="$HOME/.oh-my-zsh"
 # prevent fork error in spring (ruby)
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+# mise configuration (ruby)
+. "$HOME/.local/bin/env"
+eval "$(~/.local/bin/mise activate)"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -130,5 +134,3 @@ fi
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-. "$HOME/.local/bin/env"

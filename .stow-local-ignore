@@ -2,3 +2,4 @@
 .gitignore
 secrets
 oh-my-posh.agnoster.toml
+.DS_store
