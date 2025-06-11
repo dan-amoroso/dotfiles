@@ -97,8 +97,6 @@ if [ -f '~/workspace/google-cloud-sdk/path.zsh.inc' ]; then . '~/workspace/googl
 # Enables shell command completion for gcloud.
 if [ -f '~/workspace/google-cloud-sdk/completion.zsh.inc' ]; then . '~/workspace/google-cloud-sdk/completion.zsh.inc'; fi
 
-# direnv hook
-# eval "$(direnv hook zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
@@ -130,6 +128,9 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
   eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh.toml)"
 fi
+
+# direnv hook
+eval "$(direnv hook zsh)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
