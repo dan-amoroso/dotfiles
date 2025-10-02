@@ -29,5 +29,5 @@ return {
     'Olical/conjure',
     ft = { 'clojure', 'fennel', 'lisp' },
   },
-  { dir = '~/workspace/llm-repl.nvim', dependencies = { 'daurnimator/lua-http' } },
+  { 'adelarsq/vim-matchit' },
 }

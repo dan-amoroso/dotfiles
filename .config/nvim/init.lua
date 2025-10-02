@@ -499,6 +499,7 @@ require('lazy').setup({
           map('<leader>lR', vim.lsp.buf.rename, '[L]SP [R]ename')
           map('<leader>lf', vim.lsp.buf.format, '[L]SP [F]ormat')
           map('<leader>lq', vim.diagnostic.setloclist, '[L]SP [Q]uickfix List')
+          map('<leader>lt', '<cmd>Trouble diagnostics toggle<cr>', '[L]SP [T]rouble')
           
           -- Diagnostic navigation
           map('[d', vim.diagnostic.goto_prev, 'Previous [D]iagnostic')
@@ -610,6 +611,9 @@ require('lazy').setup({
               },
               trace = {
                 server = "verbose"
+              },
+              formatting = {
+                formatter = "ktfmt"
               }
             }
           }
@@ -632,6 +636,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'ktfmt',  -- Kotlin formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -686,6 +691,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         svelte = { 'prettierd' },
         javascript = { 'prettierd' },
+        kotlin = { 'ktfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -730,6 +736,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
     },
     config = function()
       -- See `:help cmp`
@@ -806,6 +813,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'buffer' },
         },
       }
     end,
@@ -831,6 +839,9 @@ require('lazy').setup({
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+
+  -- Better diagnostic management
+  { 'folke/trouble.nvim', opts = {} },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',

@@ -122,6 +122,12 @@ setopt HIST_IGNORE_SPACE
 # Don't store history commands
 setopt HIST_NO_STORE
 
+# nvm stuff
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
 #oh my posh prompt
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   # to run with a theme, then export with 'omp config export --format toml --output ~/dotfiles/oh-my-posh.toml'
