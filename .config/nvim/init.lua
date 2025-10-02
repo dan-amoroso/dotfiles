@@ -545,21 +545,50 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        clojure_lsp = {},
+        clojure_lsp = {
+          settings = {
+            clojure = {
+              semantic = { enable = true },
+              lint = { clj_kondo = { enabled = true } },
+              formatting = { enabled = true }
+            }
+          }
+        },
         cljfmt = {},
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-        svelte = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = "basic",
+                autoImportCompletions = true
+              }
+            }
+          }
+        },
+        ts_ls = {
+          settings = {
+            typescript = {
+              inlayHints = { enabled = true },
+              suggest = { completeFunctionCalls = true }
+            },
+            javascript = {
+              inlayHints = { enabled = true },
+              suggest = { completeFunctionCalls = true }
+            }
+          }
+        },
+        svelte = {
+          settings = {
+            svelte = {
+              plugin = {
+                svelte = {
+                  enable = true,
+                  diagnostics = { enable = true }
+                }
+              }
+            }
+          }
+        },
         prettierd = {},
         lua_ls = {
           on_init = function(client)
@@ -614,6 +643,12 @@ require('lazy').setup({
               },
               formatting = {
                 formatter = "ktfmt"
+              },
+              completion = {
+                snippets = { enabled = true }
+              },
+              diagnostics = {
+                enable = true
               }
             }
           }
@@ -637,6 +672,9 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'ktfmt',  -- Kotlin formatter
+        'black',  -- Python formatter
+        'cljfmt', -- Clojure formatter
+        'prettierd', -- JavaScript/TypeScript/Svelte formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -687,11 +725,25 @@ require('lazy').setup({
           lsp_format = lsp_format_opt,
         }
       end,
+      formatters = {
+        prettierd = {
+          prepend_args = { '--tab-width', '2', '--use-tabs', 'false' }
+        }
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         svelte = { 'prettierd' },
-        javascript = { 'prettierd' },
+        javascript = { 
+          'prettierd',
+          stop_after_first = true
+        },
+        typescript = { 
+          'prettierd',
+          stop_after_first = true
+        },
+        python = { 'black' },
         kotlin = { 'ktfmt' },
+        clojure = { 'cljfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
