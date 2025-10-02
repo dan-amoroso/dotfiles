@@ -80,21 +80,13 @@ esc = 'mode main'
 [workspace-to-monitor-force-assignment]
 10 = '^built-in retina display$'
 
-[[on-window-detected]]
-if.app-id='com.apple.iCal'
-run = 'move-node-to-workspace 9'
+# TERMINAL go to 1
 
 [[on-window-detected]]
 if.app-id='com.github.wez.wezterm'
 run = 'move-node-to-workspace 1'
 
-[[on-window-detected]]
-if.app-id='com.apple.MobileSMS'
-run = 'move-node-to-workspace 8'
-
-[[on-window-detected]]
-if.app-id='org.whispersystems.signal-desktop'
-run = 'move-node-to-workspace 8'
+# Personal browsers go to 2
 
 [[on-window-detected]]
 if.app-id='org.mozilla.com.zen.browser'
@@ -103,3 +95,23 @@ run = 'move-node-to-workspace 2'
 [[on-window-detected]]
 if.app-id='company.thebrowser.Browser'
 run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id='com.brave.Browser'
+run = 'move-node-to-workspace 3'
+
+# ORG apps go to 9
+
+[[on-window-detected]]
+if.app-id='com.apple.iCal'
+run = 'move-node-to-workspace 9'
+
+# COMMS apps go to 0
+
+[[on-window-detected]]
+if.app-id='com.apple.MobileSMS'
+run = 'move-node-to-workspace 0'
+
+[[on-window-detected]]
+if.app-id='org.whispersystems.signal-desktop'
+run = 'move-node-to-workspace 0'
