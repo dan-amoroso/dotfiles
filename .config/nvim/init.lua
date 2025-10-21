@@ -488,6 +488,11 @@ require('lazy').setup({
           -- LSP Actions
           -- All LSP actions are now under <leader>l
           map('<leader>ld', vim.lsp.buf.definition, '[L]SP [D]efinition')
+
+          -- Override default gd to use LSP definition
+          map('gd', function()
+            vim.lsp.buf.definition()
+          end, '[G]o to [D]efinition')
           map('<leader>lD', vim.lsp.buf.declaration, '[L]SP [D]eclaration')
           map('<leader>lr', vim.lsp.buf.references, '[L]SP [R]eferences')
           map('<leader>li', vim.lsp.buf.implementation, '[L]SP [I]mplementation')
@@ -500,11 +505,11 @@ require('lazy').setup({
           map('<leader>lf', vim.lsp.buf.format, '[L]SP [F]ormat')
           map('<leader>lq', vim.diagnostic.setloclist, '[L]SP [Q]uickfix List')
           map('<leader>lt', '<cmd>Trouble diagnostics toggle<cr>', '[L]SP [T]rouble')
-          
+
           -- Diagnostic navigation
           map('[d', vim.diagnostic.goto_prev, 'Previous [D]iagnostic')
           map(']d', vim.diagnostic.goto_next, 'Next [D]iagnostic')
-          
+
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -535,6 +540,12 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- Configure LSP to prefer actual definitions over import locations
+      capabilities.textDocument.definition = {
+        dynamicRegistration = true,
+        linkSupport = true,
+      }
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -550,32 +561,32 @@ require('lazy').setup({
             clojure = {
               semantic = { enable = true },
               lint = { clj_kondo = { enabled = true } },
-              formatting = { enabled = true }
-            }
-          }
+              formatting = { enabled = true },
+            },
+          },
         },
         cljfmt = {},
         pyright = {
           settings = {
             python = {
               analysis = {
-                typeCheckingMode = "basic",
-                autoImportCompletions = true
-              }
-            }
-          }
+                typeCheckingMode = 'basic',
+                autoImportCompletions = true,
+              },
+            },
+          },
         },
         ts_ls = {
           settings = {
             typescript = {
               inlayHints = { enabled = true },
-              suggest = { completeFunctionCalls = true }
+              suggest = { completeFunctionCalls = true },
             },
             javascript = {
               inlayHints = { enabled = true },
-              suggest = { completeFunctionCalls = true }
-            }
-          }
+              suggest = { completeFunctionCalls = true },
+            },
+          },
         },
         svelte = {
           settings = {
@@ -583,11 +594,11 @@ require('lazy').setup({
               plugin = {
                 svelte = {
                   enable = true,
-                  diagnostics = { enable = true }
-                }
-              }
-            }
-          }
+                  diagnostics = { enable = true },
+                },
+              },
+            },
+          },
         },
         prettierd = {},
         lua_ls = {
@@ -632,27 +643,27 @@ require('lazy').setup({
             kotlin = {
               compiler = {
                 jvm = {
-                  target = "17"
-                }
+                  target = '17',
+                },
               },
               debugAdapter = {
-                enabled = true
+                enabled = true,
               },
               trace = {
-                server = "verbose"
+                server = 'verbose',
               },
               formatting = {
-                formatter = "ktfmt"
+                formatter = 'ktfmt',
               },
               completion = {
-                snippets = { enabled = true }
+                snippets = { enabled = true },
               },
               diagnostics = {
-                enable = true
-              }
-            }
-          }
-        }
+                enable = true,
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -671,8 +682,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'ktfmt',  -- Kotlin formatter
-        'black',  -- Python formatter
+        'ktfmt', -- Kotlin formatter
+        'black', -- Python formatter
         'cljfmt', -- Clojure formatter
         'prettierd', -- JavaScript/TypeScript/Svelte formatter
       })
@@ -727,19 +738,19 @@ require('lazy').setup({
       end,
       formatters = {
         prettierd = {
-          prepend_args = { '--tab-width', '2', '--use-tabs', 'false' }
-        }
+          prepend_args = { '--tab-width', '2', '--use-tabs', 'false' },
+        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
         svelte = { 'prettierd' },
-        javascript = { 
+        javascript = {
           'prettierd',
-          stop_after_first = true
+          stop_after_first = true,
         },
-        typescript = { 
+        typescript = {
           'prettierd',
-          stop_after_first = true
+          stop_after_first = true,
         },
         python = { 'black' },
         kotlin = { 'ktfmt' },
@@ -826,8 +837,14 @@ require('lazy').setup({
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.confirm { select = true }
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -1005,6 +1022,8 @@ require('lazy').setup({
     },
   },
 })
+
+require 'autocommands'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
