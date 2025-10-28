@@ -442,9 +442,6 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -471,6 +468,29 @@ require('lazy').setup({
       --
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
       -- and elegantly composed help section, `:help lsp-vs-treesitter`
+
+      -- Configure diagnostics to show inline at the error location
+      vim.diagnostic.config {
+        virtual_text = {
+          spacing = 4,
+          prefix = '●',
+          severity_sort = true,
+        },
+        signs = true,
+        update_in_insert = false,
+        underline = true,
+        severity_sort = true,
+        float = {
+          border = 'rounded',
+          source = 'if_many',
+        },
+      }
+
+      -- Set diagnostic colors to muted gray
+      vim.api.nvim_set_hl(0, 'DiagnosticVirtualTextError', { fg = '#6b7280', italic = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticVirtualTextWarn', { fg = '#6b7280', italic = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticVirtualTextInfo', { fg = '#6b7280', italic = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticVirtualTextHint', { fg = '#6b7280', italic = true })
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
@@ -512,6 +532,7 @@ require('lazy').setup({
           -- Diagnostic navigation
           map('[d', vim.diagnostic.goto_prev, 'Previous [D]iagnostic')
           map(']d', vim.diagnostic.goto_next, 'Next [D]iagnostic')
+          map('<leader>le', vim.diagnostic.open_float, '[L]SP Show [E]rror')
 
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
@@ -568,6 +589,7 @@ require('lazy').setup({
             },
           },
         },
+        fennel_ls = {},
         cljfmt = {},
         pyright = {
           settings = {
@@ -689,6 +711,7 @@ require('lazy').setup({
         'black', -- Python formatter
         'cljfmt', -- Clojure formatter
         'prettierd', -- JavaScript/TypeScript/Svelte formatter
+        'fennel_ls', -- Fennel server
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -758,6 +781,7 @@ require('lazy').setup({
         python = { 'black' },
         kotlin = { 'ktfmt' },
         clojure = { 'cljfmt' },
+        fennel = { 'fnlfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -1026,7 +1050,6 @@ require('lazy').setup({
   },
 })
 
-require 'autocommands'
-
+require 'config/autocmds'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

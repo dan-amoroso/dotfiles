@@ -5,6 +5,7 @@
 return {
   {
     'christoomey/vim-tmux-navigator',
+    lazy = false,
     cmd = {
       'TmuxNavigateLeft',
       'TmuxNavigateDown',
@@ -19,6 +20,10 @@ return {
       { '<c-l>', '<cmd><C-U>TmuxNavigateRight<CR>' },
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<CR>' },
     },
+    init = function()
+      -- Disable wrapping when navigating at edges
+      vim.g.tmux_navigator_no_wrap = 1
+    end,
   },
   -- navigation
   { 'tpope/vim-vinegar' },
@@ -32,11 +37,11 @@ return {
         paredit = {
           -- pass any nvim-paredit options here
           keys = {
-            -- custom bindings are automatically wrapped
-            ['<C-H>'] = { paredit.api.slurp_backwards, 'Slurp backwards' },
-            ['<C-J>'] = { paredit.api.barf_backwards, 'Barf backwards' },
-            ['<C-K>'] = { paredit.api.barf_forwards, 'Barf forwards' },
-            ['<C-L>'] = { paredit.api.slurp_forwards, 'Slurp forwards' },
+            -- custom bindings using leader key to avoid conflicts with navigation
+            ['<leader>ph'] = { paredit.api.slurp_backwards, 'Slurp backwards' },
+            ['<leader>pj'] = { paredit.api.barf_backwards, 'Barf backwards' },
+            ['<leader>pk'] = { paredit.api.barf_forwards, 'Barf forwards' },
+            ['<leader>pl'] = { paredit.api.slurp_forwards, 'Slurp forwards' },
           },
         },
       }
