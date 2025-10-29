@@ -57,15 +57,14 @@ return {
     'sphamba/smear-cursor.nvim',
     event = 'VeryLazy',
     opts = {
-      -- The defaults are for a snappy animation.
-      -- Decrease these values for a "lazy" feel.
-      stiffness = 0.4,
-      trailing_stiffness = 0.3,
-      damping = 0.65,
-      damping_insert_mode = 0.65,
+      -- Higher values = faster, snappier animation
+      stiffness = 1, -- Increased from 0.4 for faster response
+      trailing_stiffness = 0.6, -- Increased from 0.3 for faster trail
+      damping = 0.8, -- Increased from 0.65 for quicker settling
+      damping_insert_mode = 0.8,
       distance_stop_animating = 0.5,
-      -- Increase this interval to lower the framerate for a choppier "lazy" animation.
-      time_interval = 25, -- in milliseconds
+      -- Lower interval = higher framerate = smoother/faster animation
+      time_interval = 10, -- ~100fps for very smooth animation
     },
   },
 }
