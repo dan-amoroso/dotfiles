@@ -626,6 +626,14 @@ require('lazy').setup({
           },
         },
         prettierd = {},
+        marksman = {
+          settings = {
+            markdown = {
+              -- Enable diagnostics
+              diagnostics = true,
+            },
+          },
+        },
         lua_ls = {
           on_init = function(client)
             if client.workspace_folders then
@@ -712,6 +720,8 @@ require('lazy').setup({
         'cljfmt', -- Clojure formatter
         'prettierd', -- JavaScript/TypeScript/Svelte formatter
         'fennel_ls', -- Fennel server
+        'marksman', -- Markdown LSP
+        'prettier', -- Markdown formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -782,6 +792,7 @@ require('lazy').setup({
         kotlin = { 'ktfmt' },
         clojure = { 'cljfmt' },
         fennel = { 'fnlfmt' },
+        markdown = { 'prettier' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -952,10 +963,20 @@ require('lazy').setup({
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- - <leader>sa + motion + char - [S]urround [A]dd: e.g. <leader>saiw" to surround word with quotes
+      -- - <leader>sd + char           - [S]urround [D]elete: e.g. <leader>sd" to delete quotes
+      -- - <leader>sr + old + new      - [S]urround [R]eplace: e.g. <leader>sr)" to replace parens with quotes
+      require('mini.surround').setup {
+        mappings = {
+          add = '<leader>sa', -- Add surrounding in Normal and Visual modes
+          delete = '<leader>sd', -- Delete surrounding
+          find = '<leader>sf', -- Find surrounding (to the right)
+          find_left = '<leader>sF', -- Find surrounding (to the left)
+          highlight = '<leader>sh', -- Highlight surrounding
+          replace = '<leader>sr', -- Replace surrounding
+          update_n_lines = '<leader>sn', -- Update `n_lines`
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
