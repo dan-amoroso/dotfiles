@@ -31,11 +31,21 @@ return {
   {
     'dundalek/parpar.nvim',
     dependencies = { 'gpanders/nvim-parinfer', 'julienvincent/nvim-paredit' },
+    init = function()
+      vim.g.parinfer_filetypes = vim.g.parinfer_filetypes
+        or { 'clojure', 'scheme', 'lisp', 'racket', 'hy', 'fennel', 'janet', 'carp', 'wast', 'yuck', 'dune' }
+      for _, ft in ipairs { 'loon', 'oo' } do
+        if not vim.tbl_contains(vim.g.parinfer_filetypes, ft) then
+          table.insert(vim.g.parinfer_filetypes, ft)
+        end
+      end
+    end,
     config = function()
       local paredit = require 'nvim-paredit'
       require('parpar').setup {
         paredit = {
           -- pass any nvim-paredit options here
+          filetypes = { 'clojure', 'fennel', 'scheme', 'lisp', 'janet', 'loon', 'oo' },
           keys = {
             -- custom bindings using leader key to avoid conflicts with navigation
             ['<leader>ph'] = { paredit.api.slurp_backwards, 'Slurp backwards' },

@@ -11,3 +11,5 @@ secrets/**
 
 # macOS finder stuff
 .DS_Store
+
+.clj-kondo/**

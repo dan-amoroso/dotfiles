@@ -83,6 +83,10 @@ vim.opt.showmode = false
 -- execute project specific settings
 vim.opt.exrc = true
 
+-- Reuse Clojure Tree-sitter highlighting for loon/oo files.
+vim.treesitter.language.register('clojure', 'loon')
+vim.treesitter.language.register('clojure', 'oo')
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -620,6 +624,26 @@ require('lazy').setup({
         linkSupport = true,
       }
 
+      -- Register .loon files and a custom LSP config for the loon language server.
+      vim.filetype.add {
+        extension = {
+          loon = 'loon',
+          oo = 'loon',
+        },
+      }
+      local lspconfig = require 'lspconfig'
+      local lspconfig_configs = require 'lspconfig.configs'
+      if not lspconfig_configs.loon then
+        lspconfig_configs.loon = {
+          default_config = {
+            cmd = { 'loon', 'lsp' },
+            filetypes = { 'loon', 'oo' },
+            root_dir = lspconfig.util.root_pattern '.git',
+            single_file_support = true,
+          },
+        }
+      end
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -783,6 +807,11 @@ require('lazy').setup({
             require('lspconfig')[server_name].setup(server)
           end,
         },
+      }
+
+      -- loon is configured directly because it is not managed by mason-lspconfig.
+      lspconfig.loon.setup {
+        capabilities = capabilities,
       }
     end,
   },
