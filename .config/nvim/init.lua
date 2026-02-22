@@ -225,6 +225,56 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation between hunks
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end, { desc = 'Jump to next git [c]hange' })
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end, { desc = 'Jump to previous git [c]hange' })
+
+        -- Actions
+        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Git [h]unk [s]tage' })
+        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Git [h]unk [r]eset (undo)' })
+        map('v', '<leader>hs', function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'Git [h]unk [s]tage (visual)' })
+        map('v', '<leader>hr', function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'Git [h]unk [r]eset (visual)' })
+        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Git [h]unk [S]tage buffer' })
+        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'Git [h]unk [u]ndo stage' })
+        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git [h]unk [R]eset buffer' })
+        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git [h]unk [p]review' })
+        map('n', '<leader>hb', function()
+          gitsigns.blame_line { full = true }
+        end, { desc = 'Git [h]unk [b]lame line' })
+        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'Git [h]unk [d]iff against index' })
+        map('n', '<leader>hD', function()
+          gitsigns.diffthis '@'
+        end, { desc = 'Git [h]unk [D]iff against last commit' })
+
+        -- Text object
+        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'Select git hunk' })
+      end,
     },
   },
 
@@ -585,12 +635,10 @@ require('lazy').setup({
             clojure = {
               semantic = { enable = true },
               lint = { clj_kondo = { enabled = true } },
-              formatting = { enabled = true },
             },
           },
         },
         fennel_ls = {},
-        cljfmt = {},
         pyright = {
           settings = {
             python = {
@@ -717,7 +765,6 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'ktfmt', -- Kotlin formatter
         'black', -- Python formatter
-        'cljfmt', -- Clojure formatter
         'prettierd', -- JavaScript/TypeScript/Svelte formatter
         'fennel_ls', -- Fennel server
         'marksman', -- Markdown LSP
@@ -776,6 +823,14 @@ require('lazy').setup({
         prettierd = {
           prepend_args = { '--tab-width', '2', '--use-tabs', 'false' },
         },
+        prettier = {
+          prepend_args = {
+            '--prose-wrap',
+            'always',
+            '--print-width',
+            '80',
+          },
+        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -790,9 +845,9 @@ require('lazy').setup({
         },
         python = { 'black' },
         kotlin = { 'ktfmt' },
-        clojure = { 'cljfmt' },
         fennel = { 'fnlfmt' },
         markdown = { 'prettier' },
+        clojure = { 'standard-clj' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -1003,7 +1058,23 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'css',
+        'html',
+        'fennel',
+        'clojure',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

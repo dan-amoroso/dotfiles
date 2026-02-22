@@ -47,6 +47,8 @@ return {
       }
     end,
   },
+  'tpope/vim-repeat',
+  'tpope/vim-surround',
   {
     'Olical/conjure',
     ft = { 'clojure', 'fennel', 'lisp' },
@@ -67,4 +69,28 @@ return {
       time_interval = 10, -- ~100fps for very smooth animation
     },
   },
+  {
+    'stevearc/oil.nvim',
+    -- -@module 'oil'
+    -- -@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
+  {
+    'https://git.sr.ht/~ioiojo/standard-clojure-style.nvim',
+    config = function()
+      require('standard-clojure-style').setup {
+        -- Enable format on save
+        format_on_save = true,
+      }
+    end,
+  },
+  {
+    'godlygeek/tabular',
+  },
+  'norcalli/nvim-colorizer.lua',
 }

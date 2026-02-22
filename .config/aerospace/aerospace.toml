@@ -2,16 +2,17 @@
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 [mode.main.binding]
+alt-enter = '''exec-and-forget open -n -a Ghostty.app'''
 # See: https://nikitabobko.github.io/AeroSpace/goodness#open-a-new-window-with-applescript
-alt-enter = '''exec-and-forget osascript -e '
-set appName to "WezTerm"
-
-if application appName is running then
-  Do Shell Script "/Applications/WezTerm.app/Contents/MacOS/wezterm-gui"
-else
-  tell application appName to activate
-end if'
-'''
+# alt-enter = '''exec-and-forget osascript -e '
+# set appName to "WezTerm"
+#
+# if application appName is running then
+#   Do Shell Script "/Applications/WezTerm.app/Contents/MacOS/wezterm-gui"
+# else
+#   tell application appName to activate
+# end if'
+# '''
 
 alt-h = 'focus left'
 alt-j = 'focus down'

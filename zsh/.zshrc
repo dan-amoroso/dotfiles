@@ -148,3 +148,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Initialize zsh completions (added by deno install script)
 autoload -Uz compinit
 compinit
+
+# opencode
+export PATH=/Users/dan/.opencode/bin:$PATH
