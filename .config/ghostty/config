@@ -1,0 +1,2 @@
+initial-command="~/.config/ghostty/launch_tmux.sh"
+gtk-titlebar = false
