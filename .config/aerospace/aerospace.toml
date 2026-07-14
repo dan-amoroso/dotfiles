@@ -105,19 +105,22 @@ run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-id='com.apple.iCal'
-run = 'move-node-to-workspace 9'
+run = 'move-node-to-workspace 8'
 
 # COMMS apps go to 0
 
 [[on-window-detected]]
 if.app-id='com.apple.MobileSMS'
-run = 'move-node-to-workspace 0'
+run = 'move-node-to-workspace 9'
 
 [[on-window-detected]]
 if.app-id='org.whispersystems.signal-desktop'
-run = 'move-node-to-workspace 0'
+run = 'move-node-to-workspace 9'
 
 [[on-window-detected]]
 if.app-id='com.apple.finder'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-id='com.1password.1password'
+run = 'layout floating'

@@ -59,7 +59,7 @@ final_space = true
   orange = '#fab387'
   os = '#ACB0BE'
   pink = '#F5BDE6'
-  text = '#494D64'
+  text = '#000000'#'#494D64'
   wight = '#FFFFFF'
 
 [[blocks]]

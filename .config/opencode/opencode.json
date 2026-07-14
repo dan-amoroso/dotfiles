@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@dietrichgebert/ponytail"] 
+  // "agent": {
+  //   "build": {
+  //     "mode": "primary",
+  //     "model": "mistral/codestral",
+  //     "tools": {
+  //       "write": true,
+  //       "edit": true,
+  //       "bash": true
+  //     }
+  //   },
+  //   "plan": {
+  //     "mode": "primary",
+  //     "model": "mistral/mistral-large-3",
+  //     "tools": {
+  //       "write": false,
+  //       "edit": false,
+  //       "bash": false
+  //     }
+  //   }
+  // }
+}

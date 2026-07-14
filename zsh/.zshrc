@@ -17,7 +17,7 @@ eval "$(~/.local/bin/mise activate)"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="agnoster" # set by `omz`
+#r ZSH_THEME="agnoster" # set by `omz`
 
 plugins=(git kubectl fzf)
 
@@ -79,6 +79,8 @@ export PATH="/opt/homebrew/opt/ruby@3.1/bin:$PATH"
 export PATH="/Applications/RubyMine.app/Contents/MacOS:$PATH"
 export PATH="/Users/dan/.cargo/bin:$PATH"
 export PATH="$HOME/.luarocks/bin:$HOME/.luarocks51/bin:$PATH"
+export PATH="/Users/dan/go/bin:$PATH"
+export PATH="$(go env GOPATH)/bin:$PATH" 
 
 # remove username and host from prompt 
 prompt_context() {}

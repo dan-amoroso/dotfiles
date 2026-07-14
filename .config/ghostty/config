@@ -1,2 +1,5 @@
 initial-command="~/.config/ghostty/launch_tmux.sh"
 gtk-titlebar = false
+theme = TokyoNight
+window-decoration = none
+window-colorspace = display-p3

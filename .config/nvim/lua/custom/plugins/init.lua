@@ -2,105 +2,51 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {
-  {
-    'christoomey/vim-tmux-navigator',
-    lazy = false,
-    cmd = {
-      'TmuxNavigateLeft',
-      'TmuxNavigateDown',
-      'TmuxNavigateUp',
-      'TmuxNavigateRight',
-      'TmuxNavigatePrevious',
-    },
-    keys = {
-      { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<CR>' },
-      { '<c-j>', '<cmd><C-U>TmuxNavigateDown<CR>' },
-      { '<c-k>', '<cmd><C-U>TmuxNavigateUp<CR>' },
-      { '<c-l>', '<cmd><C-U>TmuxNavigateRight<CR>' },
-      { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<CR>' },
-    },
-    init = function()
-      -- Disable wrapping when navigating at edges
-      vim.g.tmux_navigator_no_wrap = 1
-    end,
-  },
-  -- navigation
-  { 'tpope/vim-vinegar' },
-  -- clojure/lisp
-  {
-    'dundalek/parpar.nvim',
-    dependencies = { 'gpanders/nvim-parinfer', 'julienvincent/nvim-paredit' },
-    init = function()
-      vim.g.parinfer_filetypes = vim.g.parinfer_filetypes
-        or { 'clojure', 'scheme', 'lisp', 'racket', 'hy', 'fennel', 'janet', 'carp', 'wast', 'yuck', 'dune' }
-      for _, ft in ipairs { 'loon', 'oo' } do
-        if not vim.tbl_contains(vim.g.parinfer_filetypes, ft) then
-          table.insert(vim.g.parinfer_filetypes, ft)
-        end
-      end
-    end,
-    config = function()
-      local paredit = require 'nvim-paredit'
-      require('parpar').setup {
-        paredit = {
-          -- pass any nvim-paredit options here
-          filetypes = { 'clojure', 'fennel', 'scheme', 'lisp', 'janet', 'loon', 'oo' },
-          keys = {
-            -- custom bindings using leader key to avoid conflicts with navigation
-            ['<leader>ph'] = { paredit.api.slurp_backwards, 'Slurp backwards' },
-            ['<leader>pj'] = { paredit.api.barf_backwards, 'Barf backwards' },
-            ['<leader>pk'] = { paredit.api.barf_forwards, 'Barf forwards' },
-            ['<leader>pl'] = { paredit.api.slurp_forwards, 'Slurp forwards' },
-          },
-        },
-      }
-    end,
-  },
-  'tpope/vim-repeat',
-  'tpope/vim-surround',
-  {
-    'Olical/conjure',
-    ft = { 'clojure', 'fennel', 'lisp' },
-  },
-  { 'adelarsq/vim-matchit' },
-  -- Cursor animation for better visibility
-  {
-    'sphamba/smear-cursor.nvim',
-    event = 'VeryLazy',
-    opts = {
-      -- Higher values = faster, snappier animation
-      stiffness = 1, -- Increased from 0.4 for faster response
-      trailing_stiffness = 0.6, -- Increased from 0.3 for faster trail
-      damping = 0.8, -- Increased from 0.65 for quicker settling
-      damping_insert_mode = 0.8,
-      distance_stop_animating = 0.5,
-      -- Lower interval = higher framerate = smoother/faster animation
-      time_interval = 10, -- ~100fps for very smooth animation
-    },
-  },
-  {
-    'stevearc/oil.nvim',
-    -- -@module 'oil'
-    -- -@type oil.SetupOpts
-    opts = {},
-    -- Optional dependencies
-    dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-    lazy = false,
-  },
-  {
-    'https://git.sr.ht/~ioiojo/standard-clojure-style.nvim',
-    config = function()
-      require('standard-clojure-style').setup {
-        -- Enable format on save
-        format_on_save = true,
-      }
-    end,
-  },
-  {
-    'godlygeek/tabular',
-  },
-  'norcalli/nvim-colorizer.lua',
+
+local function gh(repo) return 'https://github.com/' .. repo end
+
+-- Globals must be set before the relevant plugin loads,
+--  so they go above the vim.pack.add call.
+vim.g.tmux_navigator_no_wrap = 1
+
+vim.pack.add {
+  gh 'christoomey/vim-tmux-navigator',
+  gh 'tpope/vim-vinegar',
+  gh 'tpope/vim-repeat',
+  gh 'tpope/vim-surround',
+  gh 'adelarsq/vim-matchit',
+  gh 'sphamba/smear-cursor.nvim',
+  gh 'stevearc/oil.nvim',
+  gh 'godlygeek/tabular',
+  gh 'catgoose/nvim-colorizer.lua',
 }
+
+-- tmux/vim split navigation (overrides built-in <C-hjkl> window moves)
+vim.keymap.set('n', '<c-h>', '<cmd><C-U>TmuxNavigateLeft<CR>')
+vim.keymap.set('n', '<c-j>', '<cmd><C-U>TmuxNavigateDown<CR>')
+vim.keymap.set('n', '<c-k>', '<cmd><C-U>TmuxNavigateUp<CR>')
+vim.keymap.set('n', '<c-l>', '<cmd><C-U>TmuxNavigateRight<CR>')
+vim.keymap.set('n', '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<CR>')
+
+require('smear_cursor').setup {
+  stiffness = 1,
+  trailing_stiffness = 0.6,
+  damping = 0.8,
+  damping_insert_mode = 0.8,
+  distance_stop_animating = 0.5,
+  time_interval = 10,
+}
+
+require('mini.icons').setup {}
+require('oil').setup {}
+
+require('colorizer').setup()
+
+-- Iterate over all other Lua files in the plugins directory and load them
+local plugins_dir = vim.fs.joinpath(vim.fn.stdpath 'config', 'lua', 'custom', 'plugins')
+for file_name, type in vim.fs.dir(plugins_dir) do
+  if type == 'file' and file_name:match '%.lua$' and file_name ~= 'init.lua' then
+    local module = file_name:gsub('%.lua$', '')
+    require('custom.plugins.' .. module)
+  end
+end
