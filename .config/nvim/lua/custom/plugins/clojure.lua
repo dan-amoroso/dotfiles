@@ -31,17 +31,15 @@ require('conform').formatters_by_ft.clojure = { 'standard-clj' }
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = vim.api.nvim_create_augroup('clojure-format-on-save', { clear = true }),
   pattern = { '*.clj', '*.cljs', '*.cljc', '*.cljd', '*.edn', '*.bb' },
-  callback = function(args)
-    require('conform').format { bufnr = args.buf, timeout_ms = 1000, lsp_format = 'fallback' }
-  end,
+  callback = function(args) require('conform').format { bufnr = args.buf, timeout_ms = 1000, lsp_format = 'fallback' } end,
 })
 
--- Conjure: reset user namespace after each *.clj save
-vim.api.nvim_create_autocmd('BufWritePost', {
-  group = vim.api.nvim_create_augroup('clojure-conjure-reset', { clear = true }),
-  pattern = '*.clj',
-  callback = function() vim.cmd 'ConjureEval (user/reset)' end,
-})
+-- -- Conjure: reset user namespace after each *.clj save
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+--   group = vim.api.nvim_create_augroup('clojure-conjure-reset', { clear = true }),
+--   pattern = '*.clj',
+--   callback = function() vim.cmd 'ConjureEval (user/reset)' end,
+-- })
 
 -- Treesitter: install Clojure parser if it is not already
 do

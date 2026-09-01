@@ -38,9 +38,7 @@ require('conform').formatters_by_ft.go = { 'goimports', 'gofumpt' }
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = vim.api.nvim_create_augroup('go-format-on-save', { clear = true }),
   pattern = '*.go',
-  callback = function(args)
-    require('conform').format { bufnr = args.buf, timeout_ms = 1000, lsp_format = 'fallback' }
-  end,
+  callback = function(args) require('conform').format { bufnr = args.buf, timeout_ms = 1000, lsp_format = 'fallback' } end,
 })
 
 -- Treesitter: install Go parsers if they are not already
@@ -60,3 +58,11 @@ vim.schedule(function()
     end
   end
 end)
+
+-- templates
+--
+vim.filetype.add {
+  extension = {
+    tmpl = 'html',
+  },
+}

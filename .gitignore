@@ -13,3 +13,6 @@ secrets/**
 .DS_Store
 
 .clj-kondo/**
+
+.config/1Password
+.config/gcloud
